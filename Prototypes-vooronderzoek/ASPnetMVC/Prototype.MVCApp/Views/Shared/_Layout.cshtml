@@ -1,0 +1,93 @@
+﻿@using System.Globalization
+@using Prototype.MVCApp
+<!DOCTYPE html>
+<html lang="@this.ViewBag.PageCulture">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - @R.SharedStrings.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        
+        <meta name="viewport" content="width=device-width" />
+        @this.Html.MetaAcceptLanguage()
+
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/themes/base/css")
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jqueryglobal")
+        @Scripts.Render("~/bundles/modernizr")
+        
+        <script type="text/javascript">
+            $(document).ready(function () {
+                //Ask ASP.NET what culture we prefer, because we stuck it in a meta tag
+                var data = $("meta[name='accept-language']").attr("content");
+
+                $('.simpleDate').datepicker({ dateFormat: "@R.SharedStrings.DatePickerDateFormat" });
+
+                //Tell jQuery to figure it out also on the client side.
+                Globalize.culture(data);
+
+                $.validator.methods.number = function(value, element) {
+                    if (Globalize.parseFloat(value)) {
+                        return true;
+                    }
+                    return false;
+                };
+
+                $.validator.methods.date = function (value, element) {
+                    if (Globalize.parseDate(value)) {
+                        return true;
+                    }
+                    return false;
+                };
+
+                $.validator.methods.digits = function (value, element) {
+                    if (Globalize.parseInt(value)) {
+                        return true;
+                    }
+                    return false;
+                };
+            });
+
+        </script>
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink(R.SharedStrings.Title, "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.ActionLink((string)ViewBag.OtherCultureName, "ChangeCulture", new { lang = ViewBag.OtherCultureCode })
+                        @*Html.Partial("_LoginPartial")*@
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink(R.Home.Index.Title, MVC.Home.Index())</li>
+                            <li>@Html.ActionLink(R.Person.Index.Title, MVC.Person.Index())</li>
+                            <li>@Html.ActionLink(R.Report.Index.Title, MVC.Report.Index())</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Prototype Test Application</p>
+                </div>
+            </div>
+        </footer>
+
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

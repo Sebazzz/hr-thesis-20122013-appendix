@@ -1,0 +1,107 @@
+﻿@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using FubuMVC.Core.UI
+
+@using Prototype.Common
+@using Prototype.FubuApp
+@using Prototype.FubuApp.Pages.Persons
+
+@model Prototype.FubuApp.Pages.Persons.IndexViewModel
+
+@{
+    IEnumerable<Person> persons = Model.Persons;
+}
+
+<script type="text/javascript">
+    function openEditDialog(entityId) {
+        var targetPage = '@(this.Urls.UrlFor<Prototype.FubuApp.Pages.Persons.EditInputModel>())?isModalOpened=true&id=' + entityId;
+
+        $("#dialog").dialog({
+            dialogClass: "no-close",
+            modal: true,
+            autoOpen: true,
+            height: 600,
+            width: 450,
+            close: function (event, ui) {
+                document.location.href = document.location.href;
+            }
+        });
+
+        $("#dialogTarget", $("#dialog")).attr("src", targetPage);
+
+        return false;
+    }
+
+    function cbEditFinished(canceled) {
+        if (!canceled) {
+            document.location.href = document.location.href;
+        }
+
+        $("#dialog").dialog("close");
+    }
+    </script>
+
+<h2>@R.PersonalData.Title</h2>
+
+<p>
+   A list of persons.
+</p>
+
+@if (persons.Any())
+{
+    <table>
+        <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>
+                @(this.ColumnHeader<IndexViewModel, Person, long>(p => p.UniqueId))
+            </th>
+            <th>
+                @(this.ColumnHeader<IndexViewModel, Person, string>(p => p.FullName))
+            </th>
+        </tr>
+
+        @foreach (var item in persons)
+        {
+            <tr>
+                <td>
+                    @(this.LinkTo(new DeleteInputModel(item.UniqueId)).Text(R.PersonalData.Delete))
+                </td>
+                <td>
+                    @(this.LinkTo(new EditInputModel(item.UniqueId)).Text(R.PersonalData.Edit).Attr("onclick", "return openEditDialog('" + item.UniqueId + "')"))
+                </td>
+                <td>
+                    @item.UniqueId
+                </td>
+                <td>
+                    @item.FullName
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @persons.Count() items
+            </td>
+            <td>
+                @(this.LinkTo<CreateInputModel>().Text(R.PersonalData.Create_Title))
+            </td>
+        </tr>
+
+    </table>
+}
+else
+{
+    <p>
+        There are no persons. @(this.LinkTo<CreateInputModel>().Text(R.PersonalData.Create_Title)).
+    </p>
+}
+    <div id="dialog" style="display: none" title="Edit">
+        <iframe id="dialogTarget"></iframe>
+    </div>

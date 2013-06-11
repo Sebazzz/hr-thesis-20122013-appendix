@@ -1,0 +1,33 @@
+﻿@using Prototype.Common
+@using Prototype.FubuApp
+@using Prototype.FubuApp.Pages.Report
+@using System
+
+@model Prototype.FubuApp.Pages.Report.ReportViewModel
+
+<h2>@R.Report.Title</h2>
+@foreach (var item in Model.Persons) {
+    <table>
+        <tr>
+            <td>@(this.NameFor<ReportViewModel, Person, long>(model => model.UniqueId))</td>
+            <td>@item.UniqueId</td>
+        </tr>
+        <tr>
+            <td>@(this.NameFor<ReportViewModel, Person, string>(model => model.FullName))</td>
+            <td>@item.FullName</td>
+        </tr>
+        <tr>
+            <td>@(this.NameFor<ReportViewModel, Person, int>(model => model.HouseNumber))</td>
+            <td>@item.HouseNumber</td>
+        </tr>
+        <tr>
+            <td>@(this.NameFor<ReportViewModel, Person, DateTime>(model => model.BirthDate))</td>
+            <td>@item.BirthDate</td>
+        </tr>
+        <tr>
+            <td>@(this.NameFor<ReportViewModel, Person, DateTime>(model => model.RegistrationDate))</td>
+            <td>@item.RegistrationDate</td>
+        </tr>
+    </table>
+    <br/>
+}

@@ -1,0 +1,21 @@
+﻿@model Prototype.Common.Person[]
+<h1>@Html.DisplayNameFor(m => m[0].FullName)</h1>
+
+@if (Model.Any()) {
+    <ul>
+        @foreach (var p in Model) {
+            <li>@p.FullName</li>
+        }
+    </ul>
+} else {
+    <p>No persons available.</p>
+}
+
+
+@{
+    <h3>Team Members</h3> string[] teamMembers = {"Matt", "Joanne", "Robert"};
+    foreach (var person in teamMembers)
+    {
+        <p>@person</p>
+    }
+}

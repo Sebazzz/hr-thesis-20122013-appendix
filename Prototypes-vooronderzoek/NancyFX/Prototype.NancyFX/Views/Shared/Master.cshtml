@@ -1,0 +1,71 @@
+﻿@{
+    //this.ViewBag.Title = "Unknown Page";
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="/Content/bootstrap.min.css" rel="stylesheet">
+        <link href="/Content/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/Content/themes/base/jquery.ui.all.css" rel="stylesheet">
+        <style type="text/css">
+            .no-close .ui-dialog-titlebar-close {
+                display: none;
+            }   
+        
+            .no-close .ui-dialog-titlebar {
+                display: none;
+            }
+
+            .no-close 
+            {
+                padding: 0;
+            }
+
+            .no-close iframe, .no-close div.ui-dialog-content {
+                margin: 0;
+                padding: 0;
+                border: 0;
+            }
+
+            .no-close iframe {
+                width: 100%;
+                height: 100%;
+            }
+
+            .withIcon .ui-icon {
+                display: inline-block;
+            }
+        </style>
+        
+
+        <script type="text/javascript" src="/Scripts/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/Scripts/jquery-ui-1.10.1.min.js"></script>
+        <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+        
+        @this.RenderSection("Head", false)
+
+        <title>@ViewBag.Title - @R.SharedStrings.Title</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <a class="brand" href="#">@R.SharedStrings.Title</a>
+                    <ul class="nav">
+                        <li class="active"><a href="/">@R.HomeIndex.Title</a></li>
+                        <li><a href="/persons/">@R.PersonIndex.Title</a></li>
+                        <li><a href="/report/">@R.ReportIndex.Title</a></li>
+                        <li>&nbsp;-&nbsp;</li>
+                        <li><a href="/_diag">Diagnostics</a></li>
+                        <li><a href="?ChangeCulture">@ViewBag.OtherCultureName</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            @this.RenderBody()
+        </div>
+    </body>
+</html>

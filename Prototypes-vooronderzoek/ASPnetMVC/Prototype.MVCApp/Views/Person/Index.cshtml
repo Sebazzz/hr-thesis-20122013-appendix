@@ -1,0 +1,96 @@
+﻿@model PersonIndexViewModel
+@using Prototype.MVCApp;
+
+@{
+    ViewBag.Title = R.Person.Index.Title;
+
+    IEnumerable<Person> persons = Model.Persons;
+    Person x = null;
+    var props = ModelMetadata.FromLambdaExpression(xy => x, ViewData).Properties;
+    
+    WebGrid grid = new WebGrid(
+        persons, 
+        sortFieldName: "sortColumn",
+        sortDirectionFieldName: "sortOrder",
+        canPage:false);
+}
+
+@functions {
+
+    private object GetDeleteLink(Person item) {
+        return Html.ActionLink(R.Person.Index.Delete, MVC.Person.Delete(item.UniqueId));
+    }
+
+    private object GetEditLink(Person item) {
+        return Html.ActionLink(R.Person.Index.Edit, MVC.Person.Edit(item.UniqueId), new { onclick = "return openEditDialog('" + item.UniqueId + "')" });
+    }
+    
+    private string GetDisplayName(IEnumerable<ModelMetadata> mdm, string columnName) {
+        var r = mdm.FirstOrDefault(d => d.PropertyName == columnName);
+
+        return r != null ? r.GetDisplayName() : columnName;
+    }
+
+}
+
+<script type="text/javascript">
+     function openEditDialog(entityId) {
+         var targetPage = '@(Url.Action("Edit"))?isModalOpened=true&id=' + entityId;
+
+         $("#dialog").dialog({
+             dialogClass: "no-close",
+             modal: true,
+             autoOpen: true,
+             height: 600,
+             width: 450,
+             close: function (event, ui) {
+                 document.location.href = document.location.href;
+             }
+         });
+
+         $("#dialogTarget", $("#dialog")).attr("src", targetPage);
+
+         return false;
+     }
+
+     function cbEditFinished(canceled) {
+         if (!canceled) {
+             document.location.href = document.location.href;
+         }
+
+         $("#dialog").dialog("close");
+     }
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+   A list of persons. (<small>@Html.CurrentLinkWithParameters("Manual version", new { manualTable = true})</small>)
+</p>
+
+@if (persons.Any()) {
+    @grid.GetHtml(
+        columns: grid.Columns(
+             grid.Column(null, canSort:false, format: d => GetDeleteLink((Person) d.Value), header: null),
+             grid.Column(null, canSort: false, format: d => GetEditLink((Person) d.Value), header: null),
+             grid.Column("UniqueId", header: GetDisplayName(props, "UniqueId")),
+             grid.Column("FullName", header: GetDisplayName(props, "FullName"))
+        )
+    )
+     
+    <p>
+        @persons.Count() items - @Html.ActionLink(R.Person.Create.Title, MVC.Person.Create())
+    </p>
+    
+} else {
+    <p>
+        There are no persons. @(Html.ActionLink(R.Person.Create.Title, MVC.Person.Create())).
+    </p>
+}
+    <div id="dialog" style="display: none" title="Edit">
+        <iframe id="dialogTarget"></iframe>
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+}

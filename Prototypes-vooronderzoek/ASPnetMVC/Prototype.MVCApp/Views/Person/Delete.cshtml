@@ -1,0 +1,20 @@
+﻿@model Person
+@{
+    ViewBag.Title = String.Format(R.Person.Delete.Title, Model.FullName);
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    Please confirm if you want to remove the person.
+</p>
+
+<p>
+    @using (Html.BeginForm()) {
+    
+        <input type="submit" id="submit" name="submit" value="Confirm"/>
+        
+        @Html.ActionLink("Cancel", MVC.Person.Index())
+
+    }
+</p>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Prototype.Common.Person>
+
+@{
+    ViewBag.Title = R.Report.Index.Title;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var item in Model) {
+    <table>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.UniqueId)</td>
+            <td>@Html.DisplayFor(modelItem => item.UniqueId)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.FullName)</td>
+            <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.HouseNumber)</td>
+            <td>@Html.DisplayFor(modelItem => item.HouseNumber)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.BirthDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.BirthDate)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.RegistrationDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.RegistrationDate)</td>
+        </tr>
+    </table>
+    <br/>
+}

@@ -1,0 +1,22 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Nancy.Validation.ModelValidationResult>
+
+@{
+    this.Layout = "/Views/Shared/Master.cshtml";
+    this.ViewBag.Title = "Validation Errors";
+}
+
+<div class="hero-unit">
+    <h1>@this.ViewBag.Title</h1>
+
+    <p>The following validation errors were found:</p>
+
+    <ul>
+        @foreach (var e in Model.Errors) {
+            foreach (var m in e.MemberNames) {
+                <li>@e.GetMessage(null)</li>
+            }
+        }
+    </ul>
+    
+
+</div>

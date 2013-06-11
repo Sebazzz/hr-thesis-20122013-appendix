@@ -1,0 +1,42 @@
+﻿@model EditCreatePageViewModel
+
+@{
+    ViewBag.Title = R.Person.Create.Title;
+    Layout = Model.IsOpenedModal ? "~/Views/Shared/_LayoutPopup.cshtml" : Layout;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @Html.Hidden("isModalOpened", Model.IsOpenedModal)
+
+    @Html.EditorFor(m => m.Context)
+
+    @CloseButtons()
+}
+
+@if (!Model.IsOpenedModal)
+{
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
+
+@section Scripts {
+}
+
+
+@helper CloseButtons()
+    {
+    <p>
+        <input type="submit" value="Save" />
+        
+        @if (Model.IsOpenedModal)
+        {
+            <a href="javascript:parent.cbEditFinished(true);">Cancel</a>
+        }
+    </p>
+}

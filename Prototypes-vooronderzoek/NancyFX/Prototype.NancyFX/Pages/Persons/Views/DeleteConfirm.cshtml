@@ -1,0 +1,19 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Person>
+
+@{
+    this.Layout = "/Views/Shared/Master.cshtml";
+    this.ViewBag.Title = String.Format(R.PersonDelete.Title, Model.FullName);
+}
+
+<div class="hero-unit">
+    <h1>@this.ViewBag.Title</h1>
+
+    <p>Please confirm you want to delete this person.</p>
+
+    <form method="POST" action="@Model.UniqueId.ToStringInvariant()">
+        <p>
+            <input type="submit" name="submit" id="submit" class="btn btn-primary btn-large" value="OK" />
+            <a href="/persons/">Cancel</a>        
+        </p>
+    </form>
+</div>

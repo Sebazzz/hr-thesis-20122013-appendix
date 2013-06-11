@@ -1,0 +1,12 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Person>
+
+@{
+    this.Layout = this.ViewBag.IsModalOpened ? "/Views/Shared/Master.Popup.cshtml" : "/Views/Shared/Master.cshtml";
+    this.ViewBag.Title = String.Format(R.PersonEdit.Title, Model.FullName);
+}
+
+<div class="hero-unit">
+    <h1>@this.ViewBag.Title</h1>
+
+    @Html.Partial("_PersonForm", Model)
+</div>

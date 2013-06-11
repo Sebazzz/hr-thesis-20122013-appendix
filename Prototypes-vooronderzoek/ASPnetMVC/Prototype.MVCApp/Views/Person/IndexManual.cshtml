@@ -1,0 +1,101 @@
+﻿@model PersonIndexViewModel
+@using Prototype.MVCApp;
+
+@{
+    ViewBag.Title = R.Person.Index.Title;
+
+    IEnumerable<Person> persons = Model.Persons;
+}
+
+<script type="text/javascript">
+     function openEditDialog(entityId) {
+         var targetPage = '@(Url.Action("Edit"))?isModalOpened=true&id=' + entityId;
+
+         $("#dialog").dialog({
+             dialogClass: "no-close",
+             modal: true,
+             autoOpen: true,
+             height: 600,
+             width: 450,
+             close: function (event, ui) {
+                 document.location.href = document.location.href;
+             }
+         });
+
+         $("#dialogTarget", $("#dialog")).attr("src", targetPage);
+
+         return false;
+     }
+
+     function cbEditFinished(canceled) {
+         if (!canceled) {
+             document.location.href = document.location.href;
+         }
+
+         $("#dialog").dialog("close");
+     }
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+   A list of persons (<small>@Html.CurrentLinkWithParameters("WebGrid version", new { manualTable = false})</small>)
+</p>
+
+@if (persons.Any()) {
+    <table>
+        <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>
+                @(Html.SortableColumnHeader<Person,long>(p => p.UniqueId, Model.SortColumn, Model.SortOrder))
+            </th>
+            <th>
+                @(Html.SortableColumnHeader<Person,string>(p => p.FullName, Model.SortColumn, Model.SortOrder))
+            </th>
+        </tr>
+
+        @foreach (var item in persons) {
+            <tr>
+                <td>
+                    @Html.ActionLink(R.Person.Index.Delete, MVC.Person.Delete(item.UniqueId)) 
+                </td>
+                <td>
+                    @Html.ActionLink(R.Person.Index.Edit, MVC.Person.Edit(item.UniqueId), new { onclick = "return openEditDialog('" + item.UniqueId + "')" }) 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UniqueId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @persons.Count() items
+            </td>
+            <td>
+                @Html.ActionLink(R.Person.Create.Title, MVC.Person.Create())
+            </td>
+        </tr>
+
+    </table>
+} else {
+    <p>
+        There are no persons. @(Html.ActionLink(R.Person.Create.Title, MVC.Person.Create())).
+    </p>
+}
+    <div id="dialog" style="display: none" title="Edit">
+        <iframe id="dialogTarget"></iframe>
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+}

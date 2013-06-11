@@ -1,0 +1,48 @@
+﻿@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using FubuMVC.Core.UI
+
+@using Prototype.Common
+@using Prototype.FubuApp
+@using Prototype.FubuApp.Pages.Persons
+
+@model Prototype.FubuApp.Pages.Persons.EditViewModel
+
+@{
+}
+
+<h2>@R.PersonalData.Title</h2>
+
+@(this.FormFor(new EditPersonInput()))
+
+<p>
+    @(this.LabelFor(m => m.UniqueId))
+    @(this.InputFor(m => m.UniqueId))
+</p>
+
+<p>
+    @(this.LabelFor(m => m.FullName))
+    @(this.InputFor(m => m.FullName))
+</p>
+
+<p>
+    @(this.LabelFor(m => m.HouseNumber))
+    @(this.InputFor(m => m.HouseNumber))
+</p>
+
+<p>
+    @(this.LabelFor(m => m.BirthDate))
+    @(this.InputFor(m => m.BirthDate))
+</p>
+
+<p>
+    @(this.LabelFor(m => m.RegistrationDate))
+    @(this.InputFor(m => m.RegistrationDate))
+</p>
+
+<p>
+    <input type="submit" name="submit" id="submit" value="Save"/>
+</p>
+
+@(this.EndForm())

@@ -1,0 +1,27 @@
+﻿@inherits NancyRazorViewBase<ReportViewModel>
+
+@{
+    this.Layout = "/Views/Shared/Master.cshtml";
+    this.ViewBag.Title = R.ReportIndex.Title;
+
+    IEnumerable<Person> persons = Model.Persons;
+}
+
+@foreach (Person item in persons)
+{
+    <div style="margin-bottom: 1em">
+        @Row(this.Html.NameFor<ReportViewModel, Person, long>(p => p.UniqueId), item.UniqueId)
+        @Row(this.Html.NameFor<ReportViewModel, Person, string>(p => p.FullName), item.FullName)
+        @Row(this.Html.NameFor<ReportViewModel, Person, int>(p => p.HouseNumber), item.HouseNumber)
+        @Row(this.Html.NameFor<ReportViewModel, Person, DateTime>(p => p.BirthDate), item.BirthDate)
+        @Row(this.Html.NameFor<ReportViewModel, Person, DateTime>(p => p.RegistrationDate), item.RegistrationDate)
+    </div>
+}
+
+@helper Row(object leftColumn, object rightColumn)
+    {
+    <div class="row-fluid">
+        <div class="span6">@leftColumn</div>
+        <div class="span6">@rightColumn</div>
+    </div>
+}

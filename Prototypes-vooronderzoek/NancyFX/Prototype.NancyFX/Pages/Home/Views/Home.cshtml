@@ -1,0 +1,14 @@
+﻿@{
+    this.Layout = "/Views/Shared/Master.cshtml";
+    this.ViewBag.Title = R.HomeIndex.Title;
+}
+
+<div class="hero-unit">
+    <h1>@this.ViewBag.Title</h1>
+    <p>@R.HomeIndex.IntroText</p>
+    <p style="display:none">
+        <a class="btn btn-primary btn-large">
+            OK
+        </a>
+    </p>
+</div>

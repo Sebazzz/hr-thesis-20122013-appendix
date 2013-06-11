@@ -1,0 +1,85 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<PersonListViewModel>
+
+@{
+    this.Layout = "/Views/Shared/Master.cshtml";
+    this.ViewBag.Title = R.PersonIndex.Title;
+
+    IEnumerable<Person> persons = this.Model.Persons;
+    SortArgument sortState = this.Model.SortState;
+}
+
+<h2>@this.ViewBag.Title</h2>
+    
+@if (persons.Any()) {
+    <table>
+        <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th><a href="?sortOrder=@sortState.SortOrder&column=UniqueId">@(this.Html.NameFor<PersonListViewModel, Person, long>(e => e.UniqueId))</a></th>
+            <th><a href="?sortOrder=@sortState.SortOrder&column=FullName">@(this.Html.NameFor<PersonListViewModel, Person, string>(e => e.FullName))</a></th>
+        </tr>
+        
+        @foreach (Person p in persons) {
+            <tr>
+                <td><a href="/persons/edit/@p.UniqueId.ToStringInvariant()" onclick="return openEditDialog('@p.UniqueId.ToStringInvariant()')">@R.PersonIndex.Edit</a></td>
+                <td><a href="/persons/delete/@p.UniqueId.ToStringInvariant()">@R.PersonIndex.Delete</a></td>
+                <td>@p.UniqueId</td>
+                <td>@p.FullName</td>
+            </tr>
+        }
+        
+        <tr>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @persons.Count() items
+            </td>
+            <td>
+                <a href="/persons/add">@R.PersonCreate.Title</a>
+            </td>
+        </tr>
+    </table>
+} else {
+    <p>
+        There are no persons. <a href="/persons/add">@R.PersonCreate.Title</a>.
+    </p>
+}
+
+    <div id="dialog" style="display: none" title="Edit">
+        <iframe id="dialogTarget"></iframe>
+    </div>
+
+@section Head {
+    <script type="text/javascript">
+        function openEditDialog(entityId) {
+            var targetPage = '/persons/edit/'+entityId+'?isModalOpened=true' + ;
+
+            $("#dialog").dialog({
+                dialogClass: "no-close",
+                modal: true,
+                autoOpen: true,
+                height: 600,
+                width: 450,
+                close: function(event, ui) {
+                    document.location.href = document.location.href;
+                }
+            });
+
+            $("#dialogTarget", $("#dialog")).attr("src", targetPage);
+
+            return false;
+        }
+
+        function cbEditFinished(canceled) {
+            if (!canceled) {
+                document.location.href = document.location.href;
+            }
+
+            $("#dialog").dialog("close");
+        }
+    </script>
+}
