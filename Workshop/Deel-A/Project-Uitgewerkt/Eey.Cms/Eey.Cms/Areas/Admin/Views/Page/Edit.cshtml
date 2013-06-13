@@ -1,0 +1,27 @@
+﻿@model CmsPage
+
+@{
+    ViewBag.Title = "Edit CMS page";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>Edit CMS page</legend>
+    
+        @Html.EditorForModel()
+    
+        <p>
+            <input type="submit" value="Save Changes" />
+        </p>
+    </fieldset>
+}
+    
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

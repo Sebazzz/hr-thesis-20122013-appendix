@@ -1,0 +1,27 @@
+﻿@model CmsPage
+
+@{
+    ViewBag.Title = "Create CMS page";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+        <legend>Add CMS page</legend>
+    
+        @Html.EditorForModel()
+    
+        <p>
+            <input type="submit" value="Save Page" />
+        </p>
+    </fieldset>
+}
+    
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

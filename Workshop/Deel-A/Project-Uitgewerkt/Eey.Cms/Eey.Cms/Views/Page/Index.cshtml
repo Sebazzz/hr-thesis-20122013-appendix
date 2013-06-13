@@ -1,0 +1,36 @@
+﻿@using Eey.Cms.Data.Util
+@model CmsPage
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    @Model.Body
+</div>
+
+@section featured {
+    @{
+
+        if (Model.Parent != null) {
+            @RenderChildPageLinks(Model.Parent)
+        }
+
+        @RenderChildPageLinks(Model)
+
+    }
+}
+
+@helper RenderChildPageLinks(CmsPage page) {
+    <div class="subPageMenu">
+        @foreach (SmartEnumerable<CmsPage>.Entry childPage in page.Children.AsSmartEnumerable()) {
+            @Html.ActionLink(childPage.Value.Title, "Index", "Page", new { id = childPage.Value.Id }, null)
+
+            if (!childPage.IsLast) {
+                <text>&middot;</text>
+            }
+        }
+    </div>
+}
